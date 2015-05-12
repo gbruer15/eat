@@ -8,11 +8,35 @@
 	"buffers":
 	[
 		{
-			"file": "camera.lua",
+			"file": "main.lua",
 			"settings":
 			{
-				"buffer_size": 3862,
+				"buffer_size": 603,
 				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "Game/intro.lua",
+			"settings":
+			{
+				"buffer_size": 2437,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "Game/game.lua",
+			"settings":
+			{
+				"buffer_size": 23810,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "Game/enemy.lua",
+			"settings":
+			{
+				"buffer_size": 0,
+				"line_ending": "Unix"
 			}
 		}
 	],
@@ -40,6 +64,7 @@
 	},
 	"file_history":
 	[
+		"/home/grant/scm/EatRepo/Eating/camera.lua",
 		"/home/grant/scm/EatRepo/Eating/eating.sublime-project",
 		"/home/grant/.config/sublime-text-2/Packages/User/Love 9.0.sublime-build"
 	],
@@ -76,23 +101,103 @@
 	"groups":
 	[
 		{
-			"selected": 0,
+			"selected": 2,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "camera.lua",
+					"file": "main.lua",
 					"settings":
 					{
-						"buffer_size": 3862,
+						"buffer_size": 603,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								175,
-								175
+								543,
+								543
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Lua/Lua.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "Game/intro.lua",
+					"settings":
+					{
+						"buffer_size": 2437,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								335,
+								335
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Lua/Lua.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "Game/game.lua",
+					"settings":
+					{
+						"buffer_size": 23810,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								20507,
+								20507
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Lua/Lua.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 136.0,
+						"translation.y": 10649.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "Game/enemy.lua",
+					"settings":
+					{
+						"buffer_size": 0,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
 							]
 						],
 						"settings":
