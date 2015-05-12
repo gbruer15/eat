@@ -1,7 +1,7 @@
 intro = {}
 
 function intro.load()
-	logopic = love.graphics.newImage('Misc Pictures/logo.png')
+	logopic = love.graphics.newImage('Assets/Misc Pictures/logo.png')
 	function  love.keypressed(key) 
 		if key == 'escape' then
 			state = 'quit'

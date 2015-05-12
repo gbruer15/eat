@@ -1,18 +1,18 @@
-require('camera')
-require("Grant's Tables")
-require("enemy")
-require("drawBackground")
-require("math")
-require("collision")
+require('1st Party Lib/camera')
+require("1st Party Lib/Grant's Tables")
+require("Game/Enemy/enemy")
+require("Game/drawBackground")
+require("1st Party Lib/math")
+require("1st Party Lib/collision")
 
-require('Main Files/game')
-require('Main Files/intro')
-require('Main Files/title')
+require('Game/game')
+require('Game/intro')
+require('Game/title')
 
 
 
 function love.run()
-	blurryfont = love.graphics.newImageFont("blurryredsmallspacing.png",
+	blurryfont = love.graphics.newImageFont("Assets/Fonts/blurryredsmallspacing.png",
     "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM1234567890!@#$%^&*()-=[]" .. [[\;',./_+{}|:"<>? `~]])
 	
 	quit = false
