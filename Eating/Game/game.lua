@@ -64,18 +64,18 @@ function game.load()
 	end
 
 
-	smallFont = love.graphics.newFont("Assets/Misc Pictures/FreeSansBold.ttf",20*90/140)
-	scoreFont = love.graphics.newFont("Assets/Misc Pictures/FreeSansBold.ttf",24*96/140)
-	moneyFont = love.graphics.newFont("Assets/Misc Pictures/FreeSansBold.ttf",30*96/140)
-	basicFont = love.graphics.newFont("Assets/Misc Pictures/FreeSansBold.ttf",48*96/140)
-	giantFont = love.graphics.newFont("Assets/Misc Pictures/FreeSansBold.ttf",110*96/140)
-	largeFont = love.graphics.newFont("Assets/Misc Pictures/FreeSansBold.ttf",96)
+	smallFont = love.graphics.newFont("Assets/Fonts/FreeSansBold.ttf",20*90/140)
+	scoreFont = love.graphics.newFont("Assets/Fonts/FreeSansBold.ttf",24*96/140)
+	moneyFont = love.graphics.newFont("Assets/Fonts/FreeSansBold.ttf",30*96/140)
+	basicFont = love.graphics.newFont("Assets/Fonts/FreeSansBold.ttf",48*96/140)
+	giantFont = love.graphics.newFont("Assets/Fonts/FreeSansBold.ttf",110*96/140)
+	largeFont = love.graphics.newFont("Assets/Fonts/FreeSansBold.ttf",96)
 	
 	defaultFont = love.graphics.newFont(14)
 	giantDefaultFont = love.graphics.newFont(110*96/140)
 
 	
-	player = {x = 400, y = 400,minsize = 10,maxsize = 80, width = 20, speed = 5, touchingenemy = false, color={255,255,255}, cubeseaten = 0, score = 1,highscore = 1, basewidth = 0, biggestwidth = 10, alive = true, timealive = 0, invincible = false, won = false, image = love.graphics.newImage("Assets/Misc Pictures/cell.png"), cells = 1, cellwidth = 20}
+	player = {x = 400, y = 400,minsize = 10,maxsize = 80, width = 20, speed = 5, touchingenemy = false, color={255,255,255}, cubeseaten = 0, score = 1,highscore = 1, basewidth = 0, biggestwidth = 10, alive = true, timealive = 0, invincible = false, won = false, image = love.graphics.newImage("Assets/Images/cell.png"), cells = 1, cellwidth = 20}
 	cellsize = 25
 	
 	player.imagewidth = player.image:getWidth()
@@ -88,7 +88,7 @@ function game.load()
 	level = {number = 3, win = 70}
 	
 	clearscreen = true
-	paused = trueAssets/
+	paused = true
 	
 	WINDOWWIDTH = love.graphics.getWidth()
 	WINDOWHEIGHT = love.graphics.getHeight()
@@ -97,20 +97,20 @@ function game.load()
 	enemyspawnrate = 0
 	maxenemies = 30
 	
-	enemypic = love.graphics.newImage("Assets/Misc Pictures/eyebrows.png")
-	enemysadpic = love.graphics.newImage("Assets/Misc Pictures/sad.png")
+	enemypic = love.graphics.newImage("Assets/Images/eyebrows.png")
+	enemysadpic = love.graphics.newImage("Assets/Images/sad.png")
 	enemypicwidth = enemypic:getWidth()
 
-	backgroundimage = love.graphics.newImage("Assets/Misc Pictures/lines.gif")
+	backgroundimage = love.graphics.newImage("Assets/Images/lines.gif")
 	
 	tile = {}
-	tile.image = love.graphics.newImage('Assets/Background/grass.png')
+	tile.image = love.graphics.newImage('Assets/Images/grass.png')
 	tile.imagewidth = tile.image:getWidth()
 	tile.imageheight = tile.image:getHeight()
 	tile.width = tile.imagewidth * 3
 	tile.height = tile.imageheight * 3
 	
-	flowerpics = {love.graphics.newImage('Assets/Background/Flowers/flower-pink.png'), love.graphics.newImage('Assets/Background/Flowers/flower-black.png'),love.graphics.newImage('Assets/Background/Flowers/flower-green.png'),love.graphics.newImage('Assets/Background/Flowers/flower-purple.png')}
+	flowerpics = {love.graphics.newImage('Assets/Images/Flowers/flower-pink.png'), love.graphics.newImage('Assets/Images/Flowers/flower-black.png'),love.graphics.newImage('Assets/Images/Flowers/flower-green.png'),love.graphics.newImage('Assets/Images/Flowers/flower-purple.png')}
 	
 	originalflowersize = flowerpics[1]:getWidth()
 	flowersize =  originalflowersize * 3
@@ -630,7 +630,7 @@ end
 
 
 function game.reload()
-	player = {x = 400, y = 400,minsize = 10,maxsize = 80, width = 20, speed = 5, touchingenemy = false, color={255,255,255}, cubeseaten = 0, score = 1,highscore = player.highscore, basewidth = 0, biggestwidth = 10, alive = true, timealive = 0, invincible = false, won = false, image = love.graphics.newImage("Assets/Misc Pictures/cell.png")}
+	player = {x = 400, y = 400,minsize = 10,maxsize = 80, width = 20, speed = 5, touchingenemy = false, color={255,255,255}, cubeseaten = 0, score = 1,highscore = player.highscore, basewidth = 0, biggestwidth = 10, alive = true, timealive = 0, invincible = false, won = false, image = love.graphics.newImage("Assets/Images/cell.png")}
 	
 	player.imagewidth = player.image:getWidth()
 	player.imageheight = player.image:getHeight()
@@ -649,12 +649,13 @@ function game.reload()
 	enemyspawnrate = 0
 	maxenemies = 30
 	
-	enemypic = love.graphics.newImage("Assets/Misc Pictures/eyebrows.png")
-	enemysadpic = love.graphics.newImage("Assets/Misc Pictures/sad.png")
+
+	enemypic = love.graphics.newImage("Assets/Images/eyebrows.png")
+	enemysadpic = love.graphics.newImage("Assets/Images/sad.png")
 	enemypicwidth = enemypic:getWidth()
 
 	
-	flowerpics = {love.graphics.newImage('Assets/Background/Flowers/flower-pink.png'), love.graphics.newImage('Assets/Background/Flowers/flower-black.png'),love.graphics.newImage('Assets/Background/Flowers/flower-green.png'),love.graphics.newImage('Assets/Background/Flowers/flower-purple.png')}
+	flowerpics = {love.graphics.newImage('Assets/Images/Flowers/flower-pink.png'), love.graphics.newImage('Assets/Images/Flowers/flower-black.png'),love.graphics.newImage('Assets/Images/Flowers/flower-green.png'),love.graphics.newImage('Assets/Images/Flowers/flower-purple.png')}
 	
 	originalflowersize = flowerpics[1]:getWidth()
 	flowersize =  originalflowersize * 3
