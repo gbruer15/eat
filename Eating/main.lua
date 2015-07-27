@@ -16,7 +16,7 @@ function love.run()
     "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM1234567890!@#$%^&*()-=[]" .. [[\;',./_+{}|:"<>? `~]])
 	
 	quit = false
-	state = 'intro'
+	state = 'game'
 	if state == 'intro' then
 		intro.run()
 	end

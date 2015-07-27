@@ -21,12 +21,21 @@
 		{
 			"cmd":
 			[
-				"love",
+				"love.exe",
 				"$project_path"
 			],
 			"shell": false,
 			"name": "Linux Love2d 9.0"
-		}
+		},
+
+		{
+			"cmd":
+			[
+				"compileSendToPhone.bat",
+				"$project_path"
+			],
+			"name": "Send to phone"
+		},
 	],
 	"folders":
 	[

@@ -50,6 +50,8 @@ function game.load()
 			scale = scale*2
 		elseif key =="i" then
 			invincible = not invincible
+		elseif key == 'u' then
+			hideMoveCircles = not hideMoveCircles
 		end
 		
 	end
@@ -59,6 +61,71 @@ function game.load()
 			if not player.alive then
 				player.alive = true
 				game.reload()
+			end
+		end
+
+		if love.system.getOS() ~= 'Android' then
+			touch.id = 1
+			touch.x = x
+			touch.y = y
+		end 
+	end
+
+	function love.mousereleased( id, x, y, pressure )
+		if love.system.getOS() ~= 'Android' then
+			touch.id = 0
+			--touch.x = 0
+			--touch.y = 0
+		end 
+	end
+
+	function love.touchpressed( id, x, y, pressure )
+		touch.id = id
+		touch.x = x
+		touch.y = y
+		addOrUpdateTouch(touches,id,x,y)
+	end
+
+	function love.touchmoved( id, x, y, pressure )
+		addOrUpdateTouch(touches,id,x,y)
+		if touch.id == id then
+			touch.x = x
+			touch.y = y
+		end
+	end
+
+	function love.touchreleased( id, x, y, pressure )
+		removeTouch(touches,id)
+		if touch.id == id then
+			touch.id = 0
+			if #touches > 0 then
+				local t = touches[1]
+				touch.id = t.id
+				touch.x = t.x
+				touch.y = t.y
+			end
+			--touch.x = 0
+			--touch.y = 0
+		end
+	end
+
+	touches = {}
+	function addOrUpdateTouch(array,id,x,y)
+		for i=1,#array do
+			if array[i].id == id then
+				array[i].x = x
+				array[i].y = y
+				return
+			end
+		end
+		table.insert(array,{id=id,x=x,y=y})
+	end
+
+	function removeTouch(array,id)
+		for i=1,#array do
+			if array[i].id == id then
+				table.remove(array,i)
+				break
 			end
 		end
 	end
@@ -75,7 +142,7 @@ function game.load()
 	giantDefaultFont = love.graphics.newFont(110*96/140)
 
 	
-	player = {x = 400, y = 400,minsize = 10,maxsize = 80, width = 20, speed = 5, touchingenemy = false, color={255,255,255}, cubeseaten = 0, score = 1,highscore = 1, basewidth = 0, biggestwidth = 10, alive = true, timealive = 0, invincible = false, won = false, image = love.graphics.newImage("Assets/Images/cell.png"), cells = 1, cellwidth = 20}
+	player = {x = 400, y = 400,minsize = 10,maxsize = 80, width = 20, speed = 500, touchingenemy = false, color={255,255,255}, cubeseaten = 0, score = 1,highscore = 1, basewidth = 0, biggestwidth = 10, alive = true, timealive = 0, invincible = false, won = false, image = love.graphics.newImage("Assets/Images/cell.png"), cells = 1, cellwidth = 20}
 	cellsize = 25
 	
 	player.imagewidth = player.image:getWidth()
@@ -101,7 +168,7 @@ function game.load()
 	enemysadpic = love.graphics.newImage("Assets/Images/sad.png")
 	enemypicwidth = enemypic:getWidth()
 
-	backgroundimage = love.graphics.newImage("Assets/Images/lines.gif")
+	backgroundimage = love.graphics.newImage("Assets/Images/lines.png")
 	
 	tile = {}
 	tile.image = love.graphics.newImage('Assets/Images/grass.png')
@@ -126,6 +193,10 @@ function game.load()
 	
 	map = {width = WINDOWWIDTH*8, height = (WINDOWHEIGHT -hud.height) * 8, x = WINDOWWIDTH/2, y = (WINDOWHEIGHT-hud.height)/2 + hud.height}
 	
+	player.x = map.x + map.width/2 - player.speed*3
+	player.y = player.speed*3
+
+
 	flowernumber = 10
 	flowers = {}
 	math.randomseed(123)
@@ -162,11 +233,91 @@ function game.load()
 		camera.y = player.y
 	end
 		
-		
-	
+	touch = {id=0, x=0,y=0}
+	moveCircleRight = {x=WINDOWWIDTH*0.75, y = (WINDOWHEIGHT-hud.height)*0.75 + hud.height, radius = 180}
+	moveCircleLeft = {x=WINDOWWIDTH*0.25, y = (WINDOWHEIGHT-hud.height)*0.75 + hud.height, radius = 180}
+
+	hideMoveCircles = love.system.getOS() ~= 'Android'
+
 	-- FPS cap
 	min_dt = 1/60
 	next_time = love.timer.getTime()
+end
+
+function game.distanceSquared(a,b)
+	return (a.x-b.x)^2 + (a.y-b.y)^2
+end
+
+function game.getPlayerDirection()
+	local angle
+	local power
+	if touch.id ~= 0 then --and game.distanceSquared(touch,moveCircle) < moveCircle.radius*moveCircle.radius then
+		if touch.x < WINDOWWIDTH/2 then
+			cx, cy, cr = moveCircleLeft.x, moveCircleLeft.y, moveCircleLeft.radius
+		else
+			cx, cy, cr = moveCircleRight.x, moveCircleRight.y, moveCircleRight.radius
+		end
+		angle = math.atan2(touch.y-cy, touch.x-cx)
+		power = ((touch.y-cy)^2 + (touch.x-cx)^2)/(cr^2)
+
+		--Zone Movement------------------------------
+		--8 zones of movement, decided based on angle
+		--1 is to the right and the number increased going clockwise
+		--[[
+		local worldx,worldy = getWorldPoint(touch.x,touch.y)
+
+		local angle = math.atan2(worldy-player.y,worldx-player.x)
+
+		local zone = math.floor( (angle + math.pi/8) / (math.pi/4), 1) % 8 + 1
+
+		return unpack(directionMap[zone])
+		--]]
+
+		--[[
+		--Terrible Movement--------------------------
+		if worldx < player.x then
+			h = 'left'
+		else
+			h = 'right'
+		end
+
+		if worldy < player.y then
+			v = 'up'
+		else
+			v = 'down'
+		end
+		--]]
+	else
+		if love.keyboard.isDown("left") or love.keyboard.isDown('a') then
+			angle = math.pi
+		elseif love.keyboard.isDown("right") or love.keyboard.isDown('d') then
+			angle = 0
+		end
+
+		if love.keyboard.isDown("up") or love.keyboard.isDown('w') then
+			if angle == 0 then
+				angle = -math.pi/4
+			elseif angle == math.pi then
+				angle = math.pi*5/4
+			else
+				angle = -math.pi/2
+			end
+		elseif love.keyboard.isDown("down") or love.keyboard.isDown('s') then
+			if angle == 0 then
+				angle = math.pi/4
+			elseif angle == math.pi then
+				angle = math.pi*3/4
+			else
+				angle = math.pi/2
+			end
+		elseif angle == nil then
+			angle = 0
+			power = 0
+		end
+
+		power = power or 1
+	end
+	return angle,math.min(power,1)
 end
 
 function game.update(dt)
@@ -179,26 +330,49 @@ function game.update(dt)
 			player.alive = false
 			paused = true
 		end
-		if (love.keyboard.isDown("left") or love.keyboard.isDown('a') ) and player.x -player.width/2 > map.x - map.width/2 then
+
+		if love.system.getOS() ~= 'Android' then
+			if touch.id == 1 then
+				touch.x, touch.y = love.mouse.getPosition()
+			end
+		end 
+
+		local angle,power = game.getPlayerDirection(player)
+		local speed = player.speed*power
+		player.x = player.x + dt*speed*math.cos(angle)/camera.xscale
+		player.y = player.y + dt*speed*math.sin(angle)/camera.yscale
+
+		if player.y + player.height/2 > map.y + map.height/2 then
+			player.y = map.y+ map.height/2 - player.height/2
+		elseif player.y-player.height/2 < map.y - map.height/2 then
+			player.y = map.y - map.height/2 + player.height/2
+		end
+
+		--terrible Move System----------------------------
+		--[[
+		horizontal,vertical = game.getPlayerDirection(player)
+		if (horizontal == 'left') and player.x -player.width/2 > map.x - map.width/2 then
 			player.x = player.x -player.speed/camera.xscale
 		end
 		
-		if ( love.keyboard.isDown("right") or love.keyboard.isDown('d') ) and player.x + player.width/2 < map.x + map.width/2 then
+		if ( horizontal == 'right' ) and player.x + player.width/2 < map.x + map.width/2 then
 			player.x = player.x + player.speed/camera.xscale
 		end
 		
-		if ( love.keyboard.isDown("up") or love.keyboard.isDown('w') ) and player.y-player.height/2 > map.y - map.height/2 then
+		if ( vertical == 'up' ) and player.y-player.height/2 > map.y - map.height/2 then
 			player.y = player.y -player.speed/camera.xscale
 		elseif player.y-player.height/2 < map.y - map.height/2 then
 			player.y = map.y - map.height/2 + player.height/2
 		end
 		
-		if  ( love.keyboard.isDown("down") or love.keyboard.isDown('s') ) and player.y + player.height/2  < map.y+ map.height/2 then
+		if  ( vertical == 'down' ) and player.y + player.height/2  < map.y+ map.height/2 then
 			player.y = player.y + player.speed/camera.xscale
 		elseif player.y + player.height/2 > map.y + map.height/2 then
 			player.y = map.y+ map.height/2 - player.height/2
 		end
-		
+
+		player.horizontal, player.vertical = horizontal,vertical
+		--]]
 		
 		player.touchingenemy = false
 		
@@ -372,6 +546,21 @@ function game.update(dt)
 	
 end
 
+function getWorldPoint(screenx,screeny)
+	--screenx-(camera.x-camera.width/2) + map.x - camera.x
+
+	local x = screenx/(camera.xscale*scale)+(camera.x-camera.width/2)
+	local y = (screeny-hud.height)/(camera.yscale*scale) + (camera.y-camera.height/2)
+	return x,y
+end
+
+function getScreenPoint(worldx,worldy)
+
+	----worldx-(camera.x-camera.width/2)
+
+
+	return (worldx-(camera.x-camera.width/2)), (worldy-(camera.y-camera.height/2))
+end
 
 function game.draw()
 
@@ -580,7 +769,7 @@ function game.draw()
 	
 	if playerinfo then
 		love.graphics.setColor(0,0,0,100)
-		love.graphics.rectangle('fill', 250,hud.height, 200, 150 - hud.height)
+		love.graphics.rectangle('fill', 250,hud.height, 200, 240 - hud.height)
 	
 		love.graphics.setFont(defaultFont)
 		love.graphics.setColor(255,255,255)
@@ -588,8 +777,42 @@ function game.draw()
 		love.graphics.print("X: " .. math.round(player.x, 0.01), 260,130)
 		love.graphics.print("Y: " .. math.round(player.y, 0.01), 330,130)
 		
+		love.graphics.print(tostring(player.horizontal) .. ' ' .. tostring(player.vertical), 260,150)
+
+		if touch.x and touch.y then
+			local x,y = getWorldPoint(touch.x,touch.y)
+			love.graphics.print(math.round(x, 0.01) .. ' ' .. math.round(y, 0.01), 260,170)
+		end
+
+		local screenx,screeny = getScreenPoint(player.x,player.y)
+
+		love.graphics.print("X: " .. math.round(screenx, 0.01), 260,190)
+		love.graphics.print("Y: " .. math.round(screeny, 0.01), 330,190)
 	
+		love.graphics.print("cW: " .. math.round(WINDOWWIDTH, 0.01), 260,220)
+		love.graphics.print("cH: " .. math.round(WINDOWHEIGHT, 0.01), 330,220)
 	
+	end
+
+	if not hideMoveCircles then
+		if touch.id ~= 0 then
+			if touch.x < WINDOWWIDTH/2 then
+				highlightMoveCircle(moveCircleLeft)
+			else
+				highlightMoveCircle(moveCircleRight)
+			end
+		end
+		drawMoveCircle(moveCircleRight)
+		drawMoveCircle(moveCircleLeft)
+	end
+
+	love.graphics.setColor(0,0,0,100)
+	love.graphics.rectangle('fill',WINDOWWIDTH-150,hud.height,150,200)
+
+	love.graphics.setColor(255,255,255)
+	love.graphics.print(#touches,WINDOWWIDTH-150,hud.height+20)
+	for i,v in pairs(touches) do
+		love.graphics.print(math.round(v.x,0.1) .. ' ' .. math.round(v.y,0.1),WINDOWWIDTH-150,hud.height+20*i)
 	end
 
 	-- FPS cap
@@ -602,6 +825,27 @@ function game.draw()
 
 
 	
+end
+
+function highlightMoveCircle(circle)
+	love.graphics.setColor(255,250,0,100)
+	love.graphics.circle('fill',circle.x,circle.y,circle.radius)
+end
+
+function drawMoveCircle(circle)
+	love.graphics.setColor(0,220,0,150)
+	love.graphics.circle('fill',circle.x,circle.y,circle.radius)
+
+	love.graphics.setColor(0,0,0,200)
+	love.graphics.circle('fill',circle.x,circle.y,circle.radius/10)
+
+
+	love.graphics.setLineWidth(8)
+	love.graphics.setColor(180,50,30)
+	for i=0,7 do
+		local angle = i*math.pi/4
+		love.graphics.drawArrow(circle.x+math.cos(angle)*circle.radius/7, circle.y+math.sin(angle)*circle.radius/8,angle,circle.radius*0.75)
+	end
 end
 
 
@@ -630,8 +874,8 @@ end
 
 
 function game.reload()
-	player = {x = 400, y = 400,minsize = 10,maxsize = 80, width = 20, speed = 5, touchingenemy = false, color={255,255,255}, cubeseaten = 0, score = 1,highscore = player.highscore, basewidth = 0, biggestwidth = 10, alive = true, timealive = 0, invincible = false, won = false, image = love.graphics.newImage("Assets/Images/cell.png")}
-	
+	player = {x = 400, y = 400,minsize = 10,maxsize = 80, width = 20, speed = 500, touchingenemy = false, color={255,255,255}, cubeseaten = 0, score = 1,highscore = player.highscore, basewidth = 0, biggestwidth = 10, alive = true, timealive = 0, invincible = false, won = false, image = love.graphics.newImage("Assets/Images/cell.png"), cells = 1, cellwidth = 20}
+	cellsize = 25
 	player.imagewidth = player.image:getWidth()
 	player.imageheight = player.image:getHeight()
 	player.heightproportion = 1 --player.imageheight/player.imagewidth
@@ -671,6 +915,9 @@ function game.reload()
 	
 	map = {width = WINDOWWIDTH*8, height = (WINDOWHEIGHT -hud.height) * 8, x = WINDOWWIDTH/2, y = (WINDOWHEIGHT-hud.height)/2 + hud.height}
 	
+	player.x = map.x + map.width/2 - player.speed*3
+	player.y = player.speed*3
+
 	flowernumber = 200
 	flowers = {}
 	math.randomseed(123)
@@ -766,3 +1013,18 @@ function game.run()
 
 end
 
+function love.graphics.drawArrow(x,y, angle, length)
+	local endx, endy = x+math.cos(angle)*length, y+math.sin(angle)*length
+	love.graphics.line(x,y,endx,endy)
+
+	local a = angle + math.pi/4
+	local l = -length/4
+
+	local c,d = endx+math.cos(a)*l, endy+math.sin(a)*l
+	love.graphics.line(endx,endy, c,d)
+
+	a = angle - math.pi/4
+
+	local e,f = endx+math.cos(a)*l, endy+math.sin(a)*l
+	love.graphics.line(endx,endy, e,f)
+end
