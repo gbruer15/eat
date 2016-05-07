@@ -3,6 +3,18 @@
 	{
 		"selected_items":
 		[
+			[
+				"high",
+				"highlightMoveCircle"
+			],
+			[
+				"moveCircle",
+				"moveCircleLeft"
+			],
+			[
+				"WIN",
+				"WINDOWHEIGHT"
+			]
 		]
 	},
 	"buffers":
@@ -27,7 +39,7 @@
 			"file": "Game/game.lua",
 			"settings":
 			{
-				"buffer_size": 23671,
+				"buffer_size": 30532,
 				"line_ending": "Windows"
 			}
 		},
@@ -35,7 +47,7 @@
 			"file": "eating.sublime-project",
 			"settings":
 			{
-				"buffer_size": 532,
+				"buffer_size": 536,
 				"line_ending": "Unix"
 			}
 		}
@@ -73,7 +85,8 @@
 	"expanded_folders":
 	[
 		"/D/PlasticScm/EatRepo/Eating",
-		"/D/PlasticScm/EatRepo/Eating/Game"
+		"/D/PlasticScm/EatRepo/Eating/Game",
+		"/D/PlasticScm/EatRepo/Eating/Game/States"
 	],
 	"file_history":
 	[
@@ -86,13 +99,15 @@
 	],
 	"find":
 	{
-		"height": 34.0
+		"height": 23.0
 	},
 	"find_in_files":
 	{
-		"height": 0.0,
+		"height": 90.0,
 		"where_history":
 		[
+			"$CURRENT_PROJECT,<open folders>",
+			"$CURRENT_PROJECT"
 		]
 	},
 	"find_state":
@@ -100,6 +115,15 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"				\n",
+			"cellsize",
+			"player.speed",
+			"player.speed =",
+			"player.speed",
+			"scale",
+			"drawplayer",
+			"player.x",
+			"dead",
 			"paused",
 			"gif",
 			"ctrl+b",
@@ -121,7 +145,7 @@
 	"groups":
 	[
 		{
-			"selected": 2,
+			"selected": 0,
 			"sheets":
 			[
 				{
@@ -137,8 +161,8 @@
 						"selection":
 						[
 							[
-								262,
-								262
+								333,
+								333
 							]
 						],
 						"settings":
@@ -150,7 +174,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 3,
+					"stack_index": 0,
 					"type": "text"
 				},
 				{
@@ -187,15 +211,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 23671,
+						"buffer_size": 30532,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								435,
-								435
+								25000,
+								25000
 							]
 						],
 						"settings":
@@ -204,10 +228,10 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 352.0,
+						"translation.y": 12171.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 0,
+					"stack_index": 1,
 					"type": "text"
 				},
 				{
@@ -216,15 +240,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 532,
+						"buffer_size": 536,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								450,
-								450
+								296,
+								296
 							]
 						],
 						"settings":
@@ -233,10 +257,10 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 336.0,
+						"translation.y": 246.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 3,
 					"type": "text"
 				}
 			]
@@ -281,7 +305,7 @@
 	{
 		"height": 0.0
 	},
-	"pinned_build_system": "Windows Love2d 9.0",
+	"pinned_build_system": "Send to phone",
 	"project": "eating.sublime-project",
 	"replace":
 	{
